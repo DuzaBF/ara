@@ -166,5 +166,8 @@ RUNTIME_SPIKE ?= $(spike_env_dir)/benchmarks/common/crt.S.o.spike $(spike_env_di
 %.cpp.o: %.cpp
 	$(RISCV_CXX) $(RISCV_CXXFLAGS) -c $< -o $@
 
+%.cpp.o.spike: %.cpp
+	$(RISCV_CXX) $(RISCV_CXXFLAGS_SPIKE) -c $< -o $@
+
 %.ld: %.ld.c
 	$(RISCV_CC) -P -E $(DEFINES) $< -o $@

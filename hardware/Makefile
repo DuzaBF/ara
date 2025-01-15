@@ -189,7 +189,7 @@ $(veril_library)/V$(veril_top): $(config_file) Makefile ../Bender.yml $(shell fi
 	$(veril_path)/verilator -f $(veril_library)/bender_script_$(config)           \
   -GNrLanes=$(nr_lanes)                                                         \
   -GVLEN=$(vlen)                                                                \
-  -O3                                                                           \
+  -O0                                                                        \
   --hierarchical \
   -Wno-fatal                                                                    \
   -Wno-PINCONNECTEMPTY                                                          \
@@ -223,6 +223,8 @@ $(veril_library)/V$(veril_top): $(config_file) Makefile ../Bender.yml $(shell fi
   $(ROOT_DIR)/tb/verilator/lowrisc_dv_verilator_simutil_verilator/cpp/*.cc      \
   $(ROOT_DIR)/tb/verilator/ara_tb.cpp                                           \
   --cc                                                                          \
+  -CFLAGS -g \
+  -CFLAGS -DVL_DEBUG \
   $(if $(trace),--trace-fst -Wno-INSECURE,)                                     \
   --top-module $(veril_top) &&                                                  \
 	cd $(veril_library) && OBJCACHE='' make -j4 -f V$(veril_top).mk
@@ -230,7 +232,7 @@ $(veril_library)/V$(veril_top): $(config_file) Makefile ../Bender.yml $(shell fi
 # Simulation
 .PHONY: simv
 simv:
-	$(veril_library)/V$(veril_top) $(if $(trace),-t,) -l ram,$(app_path)/$(app),elf
+	$(veril_library)/V$(veril_top) $(if $(trace),-t,) -l ram,$(app_path)/$(app),elf +verilator+debug
 
 .PHONY: riscv_tests_simv
 riscv_tests_simv: $(tests)

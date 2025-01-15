@@ -192,3 +192,23 @@ clean: riscv_tests_spike_clean benchmarks_clean
 	for app in $(APPS); do cd $(APPS_DIR)/$${app} && rm -f $$(find . -name "*.c.o*" -o -name "*.S.o*") && cd ..; done
 
 .INTERMEDIATE: $(addsuffix /main.c.o,$(APPS))
+
+RISCV_CCFLAGS_SPIKE_VECTORIZE ?= -march=rv64gv -mabi=$(RISCV_ABI) -I$(CURDIR)/common -O3 -fuse-ld=lld $(DEFINES) $(SPIKE_CCFLAGS) -ffunction-sections -fdata-sections -fno-builtin-printf -fno-common -mcmodel=medany $(RISCV_WARNINGS)
+# -fno-builtin-printf asolves problem with not found puts
+#  -mcmodel=medany solves problem with relocation out of range
+my_test.spike: $(RUNTIME_SPIKE) $(COMMON_SPIKE) patch-spike-crt0
+	$(RISCV_CC) $(RISCV_CCFLAGS_SPIKE_VECTORIZE) -c my_test/main.c -o my_test/main.c.o.spike
+	$(RISCV_CC) $(RISCV_CCFLAGS_SPIKE_VECTORIZE) -c my_test/foo.c -o my_test/foo.c.o.spike -Rpass-analysis=loop-vectorize
+	mkdir -p bin/
+	$(RISCV_CC) $(RISCV_CCFLAGS_SPIKE_VECTORIZE) -Iinclude -o bin/my_test.spike my_test/main.c.o.spike my_test/foo.c.o.spike $(RUNTIME_SPIKE) $(RISCV_LDFLAGS_SPIKE) -DSPIKE
+	$(RISCV_OBJDUMP) $(RISCV_OBJDUMP_FLAGS) -D bin/$@ > bin/$@.dump
+
+RISCV_CCFLAGS_VECTORIZE ?= -march=rv64gv -mabi=$(RISCV_ABI) -I$(CURDIR)/common -O3 -fuse-ld=lld $(DEFINES) -ffunction-sections -fdata-sections -fno-builtin-printf -fno-common -mcmodel=medany $(RISCV_WARNINGS)
+# -fno-builtin-printf asolves problem with not found puts
+#  -mcmodel=medany solves problem with relocation out of range
+my_test:
+	$(RISCV_CC) $(RISCV_CCFLAGS_VECTORIZE) -c my_test/main.c -o my_test/main.c.o
+	$(RISCV_CC) $(RISCV_CCFLAGS_VECTORIZE) -c my_test/foo.c -o my_test/foo.c.o -Rpass-analysis=loop-vectorize
+	mkdir -p bin/
+	$(RISCV_CC) $(RISCV_CCFLAGS_VECTORIZE) -Iinclude -o bin/my_test my_test/main.c.o my_test/foo.c.o  $(RISCV_LDFLAGS_SPIKE)
+	$(RISCV_OBJDUMP) $(RISCV_OBJDUMP_FLAGS) -D bin/$@ > bin/$@.dump
