@@ -206,9 +206,9 @@ my_test.spike: $(RUNTIME_SPIKE) $(COMMON_SPIKE) patch-spike-crt0
 RISCV_CCFLAGS_VECTORIZE ?= -march=rv64gv -mabi=$(RISCV_ABI) -I$(CURDIR)/common -O3 -fuse-ld=lld $(DEFINES) -ffunction-sections -fdata-sections -fno-builtin-printf -fno-common -mcmodel=medany $(RISCV_WARNINGS)
 # -fno-builtin-printf asolves problem with not found puts
 #  -mcmodel=medany solves problem with relocation out of range
-my_test:
+my_test: $(RUNTIME_LLVM)
 	$(RISCV_CC) $(RISCV_CCFLAGS_VECTORIZE) -c my_test/main.c -o my_test/main.c.o
 	$(RISCV_CC) $(RISCV_CCFLAGS_VECTORIZE) -c my_test/foo.c -o my_test/foo.c.o -Rpass-analysis=loop-vectorize
 	mkdir -p bin/
-	$(RISCV_CC) $(RISCV_CCFLAGS_VECTORIZE) -Iinclude -o bin/my_test my_test/main.c.o my_test/foo.c.o  $(RISCV_LDFLAGS_SPIKE)
+	$(RISCV_CC) $(RISCV_CCFLAGS_VECTORIZE) -Iinclude -o bin/my_test my_test/main.c.o my_test/foo.c.o $(RUNTIME_LLVM) $(RISCV_LDFLAGS)
 	$(RISCV_OBJDUMP) $(RISCV_OBJDUMP_FLAGS) -D bin/$@ > bin/$@.dump
