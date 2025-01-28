@@ -19,7 +19,7 @@ int main()
         a.data[i] = i;
         b.data[i] = i;
     }
-    foo(&a, &b, &c);
+    foo_intr(&a, &b, &c);
     for (int i = 0; i < 5; ++i) {
         printf("c[%d] = %d\n", i, c.data[i]);
     }

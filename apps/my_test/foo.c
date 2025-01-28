@@ -1,9 +1,27 @@
 #include "foo.h"
 
-void foo(const my_array_t *a,  const my_array_t *b, my_array_t *c)
+#include "rivec/vector_defines.h"
+
+void foo(const my_array_t *a, const my_array_t *b, my_array_t *c)
 {
     for (int i = 0; i < MY_ARRAY_SIZE; i++)
     {
         c->data[i] = a->data[i] + b->data[i];
     }
+}
+
+void foo_intr(const my_array_t *a, const my_array_t *b, my_array_t *c)
+{
+    size_t vl = vsetvl_e32m1(6);
+
+    const int32_t* a_ = a->data;
+    const int32_t* b_ = b->data;
+    int32_t* c_ = c->data;
+
+    vint32m1_t buf_a = vle32_v_i32m1(a_, vl);
+    vint32m1_t buf_b = vle32_v_i32m1(b_, vl);
+
+    vint32m1_t buf_c = vadd(buf_a, buf_b, vl);
+
+    vse32_v_i32m1(c_, buf_c, vl);
 }
