@@ -25,3 +25,13 @@ void foo_intr(const my_array_t *a, const my_array_t *b, my_array_t *c)
 
     vse32_v_i32m1(c_, buf_c, vl);
 }
+
+void bar(const my_array_t *a, my_array_t *b) {
+    size_t vl = vsetvl_e32m1(6);
+    const int32_t* a_ = a->data;
+    int32_t* b_ = b->data;
+    vint32m1_t buf_a = vle32_v_i32m1(a_, vl);
+    vint32m1_t buf_b = vadd(buf_a, 1, vl);
+    vint32m1_t buf_c = vmul(buf_b, 2, vl);
+    vse32_v_i32m1(b_, buf_c, vl);
+}
