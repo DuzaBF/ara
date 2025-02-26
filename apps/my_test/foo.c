@@ -35,3 +35,13 @@ void bar(const my_array_t *a, my_array_t *b) {
     vint32m1_t buf_c = vmul(buf_b, 2, vl);
     vse32_v_i32m1(b_, buf_c, vl);
 }
+
+void test_vsetvl() {
+    size_t vl = vsetvl_e8m1(7);
+    volatile int8_t a[7] = {0};
+    volatile int8_t b[7] = {0};
+    vint8m1_t buf_a = vle8_v_i8m1(a, vl);
+    vint8m1_t buf_b = vadd(buf_a, 1, vl);
+    vse8_v_i8m1(b, buf_b, vl);
+    vl = vsetvl_e32m2(33);
+}

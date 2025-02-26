@@ -19,10 +19,11 @@ int main()
         a.data[i] = i;
     }
     bar(&a, &b);
-    foo_intr(&a, &b, &c);
-    for (int i = 0; i < 5; ++i) {
-        printf("a[%d] = %d; ", i, a.data[i]);
-        printf("b[%d] = %d; ", i, b.data[i]);
-        printf("c[%d] = %d\n", i, c.data[i]);
-    }
+    test_vsetvl();
+    // foo_intr(&a, &b, &c);
+    // for (int i = 0; i < 5; ++i) {
+    //     printf("a[%d] = %d; ", i, a.data[i]);
+    //     printf("b[%d] = %d; ", i, b.data[i]);
+    //     printf("c[%d] = %d\n", i, c.data[i]);
+    // }
 }
