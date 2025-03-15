@@ -592,7 +592,7 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
           //  Vector Arithmetic instructions  //
           //////////////////////////////////////
 
-          riscv::OpcodeVec: begin
+          riscv::OpcodeVec: begin: opcode_vec
             // Instruction is of one of the RVV types
             automatic rvv_instruction_t insn = rvv_instruction_t'(acc_req_i.insn.instr);
 
@@ -2852,7 +2852,7 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
           //  Vector Loads  //
           ////////////////////
 
-          riscv::OpcodeLoadFp: begin
+          riscv::OpcodeLoadFp: begin: opcode_vle
             // Instruction is of one of the RVV types
             automatic rvv_instruction_t insn = rvv_instruction_t'(acc_req_i.insn.instr);
 
@@ -3091,7 +3091,7 @@ module ara_dispatcher import ara_pkg::*; import rvv_pkg::*; #(
           // The current vector length refers to the target EEW!
           // Vector stores never re-shuffle the source register!
 
-          riscv::OpcodeStoreFp: begin
+          riscv::OpcodeStoreFp: begin: opcode_vse
             // Instruction is of one of the RVV types
             automatic rvv_instruction_t insn = rvv_instruction_t'(acc_req_i.insn.instr);
 
