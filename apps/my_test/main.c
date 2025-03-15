@@ -14,16 +14,17 @@
 
 int main()
 {
-    my_array_t a, b, c;
-    for (int i = 0; i < 5; ++i) {
-        a.data[i] = i;
+    my_array_t a, b;
+    for (int i = 0; i < MY_ARRAY_SIZE; ++i)
+    {
+        a.data[i] = (((uint32_t)i) << 24) | (((uint32_t)i) << 16) | (((uint32_t)i) << 8) | (((uint32_t)i) << 0);
     }
     bar(&a, &b);
-    test_vsetvl();
+    // test_vsetvl();
     // foo_intr(&a, &b, &c);
-    // for (int i = 0; i < 5; ++i) {
-    //     printf("a[%d] = %d; ", i, a.data[i]);
-    //     printf("b[%d] = %d; ", i, b.data[i]);
-    //     printf("c[%d] = %d\n", i, c.data[i]);
-    // }
+    for (int i = 10; i < 11; ++i) {
+        printf("a[%d] = %#010X; ", i, a.data[i]);
+        printf("b[%d] = %#010X; ", i, b.data[i]);
+    }
+    printf("\n");
 }

@@ -27,7 +27,7 @@ void foo_intr(const my_array_t *a, const my_array_t *b, my_array_t *c)
 }
 
 void bar(const my_array_t *a, my_array_t *b) {
-    size_t vl = vsetvl_e32m1(6);
+    size_t vl = vsetvl_e32m1(21);
     const int32_t* a_ = a->data;
     int32_t* b_ = b->data;
     vint32m1_t buf_a = vle32_v_i32m1(a_, vl);
