@@ -27,13 +27,13 @@ void foo_intr(const my_array_t *a, const my_array_t *b, my_array_t *c)
 }
 
 void bar(const my_array_t *a, my_array_t *b) {
-    size_t vl = vsetvl_e32m1(21);
-    const int32_t* a_ = a->data;
-    int32_t* b_ = b->data;
-    vint32m1_t buf_a = vle32_v_i32m1(a_, vl);
-    vint32m1_t buf_b = vadd(buf_a, 1, vl);
-    vint32m1_t buf_c = vmul(buf_b, 2, vl);
-    vse32_v_i32m1(b_, buf_c, vl);
+    size_t vl = vsetvl_e8m1(30);
+    const int8_t* a_ = a->data;
+    int8_t* b_ = b->data;
+    vint8m1_t buf_a = vle8_v_i8m1(a_, vl);
+    vint8m1_t buf_b = vadd(buf_a, 1, vl);
+    vint8m1_t buf_c = vmul(buf_b, 2, vl);
+    vse8_v_i8m1(b_, buf_c, vl);
 }
 
 void test_vsetvl() {

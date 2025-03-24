@@ -50,11 +50,11 @@ SECTIONS {
   } > L2
 
   .my_data_a : ALIGN(128) {
-
+    . = . + 0x01;
   } > L2
 
   .my_data_b : ALIGN(128) {
-
+    . = . + 0x01;
   } > L2
 
   .comment : ALIGN(ALIGNMENT) { *(.comment) } > L2

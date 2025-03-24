@@ -3,5 +3,5 @@
 #define MY_ARRAY_SIZE (128)
 
 typedef struct  {
-    int32_t data[MY_ARRAY_SIZE];
+    int8_t data[MY_ARRAY_SIZE];
 } my_array_t;
