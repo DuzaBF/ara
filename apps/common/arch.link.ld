@@ -49,6 +49,14 @@ SECTIONS {
     l2_alloc_base = ALIGN(ALIGNMENT);
   } > L2
 
+  .my_data_a : ALIGN(128) {
+
+  } > L2
+
+  .my_data_b : ALIGN(128) {
+
+  } > L2
+
   .comment : ALIGN(ALIGNMENT) { *(.comment) } > L2
 
   eoc_address_reg        = 0xD0000000;
