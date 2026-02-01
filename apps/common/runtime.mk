@@ -79,8 +79,8 @@ RISCV_SIM     ?= $(ISA_SIM_INSTALL_DIR)/bin/spike
 RISCV_SIM_MOD ?= $(ISA_SIM_MOD_INSTALL_DIR)/bin/spike
 # VLEN should be lower or equal than 4096 because of spike restrictions
 vlen_spike := $(shell vlen=$$(grep vlen $(ARA_DIR)/config/$(config).mk | cut -d" " -f3) && echo "$$(( $$vlen < 4096 ? $$vlen : 4096 ))")
-RISCV_SIM_OPT ?= --isa=rv64gcv_zfh --varch="vlen:$(vlen_spike),elen:64"
-RISCV_SIM_MOD_OPT ?= --isa=rv64gcv_zfh --varch="vlen:$(vlen_spike),elen:64" -d
+RISCV_SIM_OPT ?= --isa=rv64gcv_zfh_zvl4096b_zve64d
+RISCV_SIM_MOD_OPT ?= --isa=rv64gcv_zfh_zvl4096b_zve64d  -d
 
 # Python
 PYTHON ?= python3
@@ -113,7 +113,7 @@ RISCV_LDFLAGS  ?= -static -nostartfiles -lm -Wl,--gc-sections -T$(CURDIR)/common
 endif
 RISCV_CCFLAGS_SPIKE  ?= $(RISCV_FLAGS) $(SPIKE_CCFLAGS) -ffunction-sections -fdata-sections -std=gnu99
 RISCV_CXXFLAGS ?= $(RISCV_FLAGS) -ffunction-sections -fdata-sections
-RISCV_LDFLAGS_SPIKE  ?= -static -nostartfiles -lm $(SPIKE_LDFLAGS) -Wl,--gc-sections
+RISCV_LDFLAGS_SPIKE  ?= -static -nostartfiles -lm $(SPIKE_LDFLAGS) -Wl,--gc-sections -v
 
 # GCC Flags
 RISCV_FLAGS_GCC    ?= -mcmodel=medany -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI) -I$(CURDIR)/common -static -O3 -ffast-math -fno-common -fno-builtin-printf $(DEFINES) $(RISCV_WARNINGS)
