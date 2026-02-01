@@ -79,14 +79,24 @@ void indexed(int32_t* cur_pos, size_t len) {
     __riscv_vsoxei8_v_i32m1(cur_pos, off_vec, b_vec, vl);
 }
 
+void chaining(int32_t* cur_pos, size_t len) {
+    for (size_t vl = 0; len > 0; len -= vl) {
+        vl = __riscv_vsetvl_e32m1(len);
+        vint32m1_t a_vec = __riscv_vmv_s_x_i32m1(100, vl);
+        vint32m1_t b_vec = __riscv_vadd_vx_i32m1(a_vec, 20, vl);
+        __riscv_vse32_v_i32m1(cur_pos, b_vec, vl);
+        cur_pos = cur_pos + vl;
+    }
+}
+
 int main() {
     // printf("Before\n");
-    for (int i = 0; i < LENGTH; ++i) {
-        a[i] = i;
-        // printf("a[%02i] = %d\n", i, a[i]);
-    }
+    // for (int i = 0; i < LENGTH; ++i) {
+    //     a[i] = i;
+    //     printf("a[%02i] = %d\n", i, a[i]);
+    // }
     // int start = start_inst_count();
-    unit_stride(a, LENGTH);
+    chaining(a, LENGTH);
     // int count = end_inst_count(start);
     // printf("Used %d instructions\n", count);
 
