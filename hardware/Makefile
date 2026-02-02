@@ -224,6 +224,7 @@ $(veril_library)/V$(veril_top): $(config_file) Makefile ../Bender.yml $(shell fi
   $(ROOT_DIR)/tb/verilator/ara_tb.cpp                                           \
   --cc                                                                          \
   $(if $(trace),--trace-fst -Wno-INSECURE,)                                     \
+  --trace-structs \
   --top-module $(veril_top) &&                                                  \
 	cd $(veril_library) && OBJCACHE='' make -j4 -f V$(veril_top).mk
 

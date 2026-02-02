@@ -30,7 +30,7 @@
 
 #include <riscv_vector.h>
 
-#define LENGTH 19
+#define LENGTH 61
 
 static int32_t a[LENGTH] = {};
 
@@ -84,7 +84,8 @@ void chaining(int32_t* cur_pos, size_t len) {
         vl = __riscv_vsetvl_e32m1(len);
         vint32m1_t a_vec = __riscv_vmv_s_x_i32m1(100, vl);
         vint32m1_t b_vec = __riscv_vadd_vx_i32m1(a_vec, 20, vl);
-        __riscv_vse32_v_i32m1(cur_pos, b_vec, vl);
+        vint32m1_t c_vec = __riscv_vmul_vx_i32m1(b_vec, 3, vl);
+        __riscv_vse32_v_i32m1(cur_pos, c_vec, vl);
         cur_pos = cur_pos + vl;
     }
 }
