@@ -48,6 +48,23 @@ int chaining(uint64_t* cur_pos, size_t len) {
     return 0;
 }
 
+int chaining_asm(uint64_t* cur_pos, size_t len) {
+    int a = 100;
+    int b = 2;
+    for (size_t vl = 0; len > 0; len -= vl) {
+        asm volatile("vsetvli %0, %1, e64, m1, ta, ma" : "=r"(vl) : "r"(len));
+        asm volatile("vmv.v.i v8, 0");
+        asm volatile("vmseq.vi v8, v8, 0");
+        asm volatile("viota.m v9, v8");
+        asm volatile("vadd.vx v10, v9, %0" :: "r"(a));
+        asm volatile("vmul.vx v11, v10, %0" :: "r"(b));
+        asm volatile("vse64.v v11, (%0)" :: "r"(cur_pos));
+        cur_pos = cur_pos + vl;
+    }
+    return 0;
+}
+
 int main() {
-    chaining(a, LENGTH);
+    // chaining(a, LENGTH);
+    chaining_asm(a, LENGTH);
 }
