@@ -26,4 +26,4 @@ lint_off -rule SYMRSVDWORD -file "*/cva6/*" -match "*"
 // split_var -module "ara_dispatcher" 
 
 tracing_on -file "*/lane.sv"
-tracing_off -file "ara_tb_verilator.sv"
+tracing_off -file "*/ara_tb_verilator.sv"
