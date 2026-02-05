@@ -37,9 +37,7 @@ static uint64_t a[LENGTH] = {};
 int chaining(uint64_t* cur_pos, size_t len) {
     for (size_t vl = 0; len > 0; len -= vl) {
         vl = __riscv_vsetvl_e64m1(len);
-        vuint64m1_t a_vec = __riscv_vmv_v_x_u64m1(0, vl);
-        vbool64_t m_vec = __riscv_vmseq_vx_u64m1_b64(a_vec, 0, vl);
-        vuint64m1_t b_vec = __riscv_viota_m_u64m1(m_vec, vl);
+        vuint64m1_t b_vec = __riscv_vid_v_u64m1(vl);
         vuint64m1_t c_vec = __riscv_vadd_vx_u64m1(b_vec, 100, vl);
         vuint64m1_t d_vec = __riscv_vmul_vx_u64m1(c_vec, 2, vl);
         __riscv_vse64_v_u64m1(cur_pos, d_vec, vl);
@@ -65,6 +63,6 @@ int chaining_asm(uint64_t* cur_pos, size_t len) {
 }
 
 int main() {
-    // chaining(a, LENGTH);
-    chaining_asm(a, LENGTH);
+    chaining(a, LENGTH);
+    // chaining_asm(a, LENGTH);
 }
